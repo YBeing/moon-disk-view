@@ -30,6 +30,7 @@
         </el-upload>
         <el-button icon="el-icon-folder-add" @click="createDir">新建文件夹</el-button>
         <el-button icon="el-icon-download">下载</el-button>
+        <el-button icon="el-icon-delete" @click="deleteFiles">删除</el-button>
       </div>
     </el-row>
     <el-table
@@ -111,6 +112,7 @@
       return {
         tableData: [],
         multipleSelection: [],
+        ideSelection: [],
         breadcrumbs: [
           {breadName: '全部文件',currentPid:0,indexNum:0}
         ],
@@ -138,7 +140,13 @@
     methods: {
 
       handleSelectionChange(val) {
+        console.log(val);
+
         this.multipleSelection = val;
+        this.multipleSelection.forEach(value => {
+          this.ideSelection.push({'id' : value.id, 'type':value.type});
+
+        });
       },
       freshData(row, column, event) {
         this.$http.get('http://localhost:8088/file/indexFilePage/?pid='+row.pid+'&username=' + localStorage.getItem("username"))
@@ -224,6 +232,34 @@
       beforeUpload(file){
         this.uploadData.dirPid=currentPidForCreate.currPidForCreate;
 
+      },
+      deleteFiles(){
+
+        this.$http({
+          method:"post",
+          url: "http://localhost:8088/file/deleteFile",
+          data: this.ideSelection,
+
+        }).then(resp => {  //响应结果
+          if(resp.data.status === '0'){
+            this.$message({
+              message: resp.data.msg,
+              type: 'error'
+            });
+          }else{
+            this.$message({
+              message: resp.data.msg,
+              type: 'success'
+            });
+          }
+
+
+        }).catch(err => {
+          this.$message({
+            message: '请求失败：请检查服务是否可用',
+            type: 'error'
+          });
+        });
       }
 
     }
