@@ -63,7 +63,7 @@
         </el-menu>
       </el-col>
 
-      <el-col span="20">
+      <el-col :span="20">
 
 
 
@@ -84,7 +84,7 @@
   let Authorization =  localStorage.getItem('Authorization');
   let username =  localStorage.getItem('username');
   export default {
-    name: "main",
+    name: "diskMain",
     data() {
       return {
         importHeaders: {'Authorization': Authorization,'username':username}
@@ -101,17 +101,8 @@
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
-      handleChange(file) {
-        this.$refs.upload.clearFiles();
-      },
-      handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
-      beforeRemove(file, fileList) {
-        return this.$confirm(`确定移除 ${file.name}？`);
-      },
       test() {
-        this.$ajax.get('http://localhost:8088/test')
+        this.$http.get('http://localhost:8088/test')
           .then(resp => {
 
           }).catch(err => {

@@ -42,7 +42,7 @@
     methods: {
 
       login(){
-       /*this.$ajax.get('http://localhost:8088/login?username='+this.username+'&password='+this.password)
+       /*this.$http.get('http://localhost:8088/login?username='+this.username+'&password='+this.password)
         .then( resp => {
           console.log(resp.data.status ==='0');
           console.log(resp);
@@ -65,7 +65,7 @@
         }).catch(err => {
           console.log(err)
         })*/
-        this.$ajax({
+        this.$http({
           method:"post",
           url: "http://localhost:8088/user/login",
           data: {
@@ -90,7 +90,7 @@
 
             localStorage.setItem("Authorization",resp.data.data.token);
             localStorage.setItem("username",resp.data.data.username);
-            this.$router.push('/main');
+            this.$router.push('/diskMain');
           }
 
 

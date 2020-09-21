@@ -8,11 +8,10 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.use(ElementUI);
-Vue.use(axios);
 
 Vue.config.productionTip = false;
 // axios.defaults.withCredentials=true;
-Vue.prototype.$ajax=axios;
+Vue.prototype.$http=axios;
 
 /* eslint-disable no-new */
 

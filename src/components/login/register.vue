@@ -46,7 +46,7 @@
         this.$router.push("/login");
       },
       register(){
-        this.$ajax({
+        this.$http({
           method:"post",
           url: "http://localhost:8088//user/register",
           data: {

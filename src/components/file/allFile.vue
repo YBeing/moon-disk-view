@@ -20,8 +20,9 @@
           action="http://localhost:8088/file/upload"
           :limit="1"
           :show-file-list="true"
-          :on-change="handleChange"
+          :before-upload="beforeUpload"
           :on-success="handleSuccess"
+          :auto-upload="true"
           :headers=importHeaders
           :data=uploadData
           style="float: left; padding-right: 1vh">
@@ -102,6 +103,8 @@
   let Authorization =  localStorage.getItem('Authorization');
   let username =  localStorage.getItem('username');
   let dirPid =0;
+  let currentPidForCreate ={currPidForCreate:0};
+
   export default {
     name: "allFile",
     data() {
@@ -112,16 +115,15 @@
           {breadName: '全部文件',currentPid:0,indexNum:0}
         ],
         importHeaders: {'Authorization': Authorization,'username':username},
-        uploadData:{'username':username,'dirPid':dirPid},
-        currentPidForCreate:{currPidForCreate:0}
+        // currentPidForCreate:{currPidForCreate:0},
+        uploadData:{'username':username,'dirPid':currentPidForCreate}
+
 
       }
     },
     mounted: function () {
-      this.$ajax.get('http://localhost:8088/file/indexFilePage/?pid=0 &username=' + localStorage.getItem("username"))
+      this.$http.get('http://localhost:8088/file/indexFilePage/?pid=0 &username=' + localStorage.getItem("username"))
         .then(resp => {
-          console.log(resp.data.status === '0');
-          console.log(resp);
           if (resp.data.status === '0') {
             this.$message({
               message: resp.data.msg,
@@ -134,20 +136,12 @@
         });
     },
     methods: {
-      toggleSelection(rows) {
-        if (rows) {
-          rows.forEach(row => {
-            this.$refs.multipleTable.toggleRowSelection(row);
-          });
-        } else {
-          this.$refs.multipleTable.clearSelection();
-        }
-      },
+
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
       freshData(row, column, event) {
-        this.$ajax.get('http://localhost:8088/file/indexFilePage/?pid='+row.pid+'&username=' + localStorage.getItem("username"))
+        this.$http.get('http://localhost:8088/file/indexFilePage/?pid='+row.pid+'&username=' + localStorage.getItem("username"))
           .then(resp => {
             console.log(resp.data.status === '0');
             console.log(resp);
@@ -164,7 +158,7 @@
                 {breadName: row.fileName,currentPid:row.pid,indexNum:this.breadcrumbs.length}
               );
               //这里的这个pid是为了我们子目录下创建文件夹时能取得他的父文件夹的id
-              this.currentPidForCreate.currPidForCreate=row.pid;
+              currentPidForCreate.currPidForCreate=row.pid;
 
             }
 
@@ -175,10 +169,8 @@
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(({value}) => {
-          this.$ajax.get('http://localhost:8088/file/createDir/?dirname=' + value + '&pid='+this.currentPidForCreate.currPidForCreate+' &username=' + localStorage.getItem("username"))
+          this.$http.get('http://localhost:8088/file/createDir/?dirname=' + value + '&pid='+currentPidForCreate.currPidForCreate+' &username=' + localStorage.getItem("username"))
             .then(resp => {
-              console.log(resp.data.status === '0');
-              console.log(resp);
               if (resp.data.status === '0') {
                 this.$message({
                   message: resp.data.msg,
@@ -199,11 +191,11 @@
 
         })
       },
-      handleChange(file) {
+      handleSuccess(res, file ,fileList){
         this.$refs.upload.clearFiles();
-      },
-      handleSuccess(response, file, fileList){
-        alert(response);
+        this.tableData = res.data;
+
+
       },
       goToPage(pid,indexNum){
         // alert(indexNum);
@@ -211,10 +203,8 @@
           let obj = this.breadcrumbs[i];
             this.breadcrumbs.splice(i,1);
         };
-        this.$ajax.get('http://localhost:8088/file/indexFilePage/?pid='+pid+'&username=' + localStorage.getItem("username"))
+        this.$http.get('http://localhost:8088/file/indexFilePage/?pid='+pid+'&username=' + localStorage.getItem("username"))
           .then(resp => {
-            console.log(resp.data.status === '0');
-            console.log(resp);
             if (resp.data.status === '0') {
               this.$message({
                 message: resp.data.msg,
@@ -229,7 +219,11 @@
       reSetCurrentPid(pid,indexNum){
         this.goToPage(pid,indexNum);
         //当我们点击全部文件的时候还原我们的currentPid=0
-        this.currentPidForCreate.currPidForCreate=0;
+        currentPidForCreate.currPidForCreate=0;
+      },
+      beforeUpload(file){
+        this.uploadData.dirPid=currentPidForCreate.currPidForCreate;
+
       }
 
     }

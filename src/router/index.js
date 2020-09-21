@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/login/login'
 import Register from '@/components/login/register'
-import Main from '@/components/file/main'
+import DiskMain from '@/components/file/diskMain'
 import AllFile from '@/components/file/allFile'
 import ImageFile from '@/components/file/imageFile'
 
@@ -26,9 +26,9 @@ export default new Router({
       component: Register
     },
     {
-      path: "/main",
-      name: "main",
-      component: Main,
+      path: "/diskMain",
+      name: "diskMain",
+      component: DiskMain,
       children:[
         {
           path:"/allFile",
