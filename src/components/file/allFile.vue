@@ -30,7 +30,7 @@
           <el-button icon="el-icon-upload" type="primary">上传</el-button>
         </el-upload>
         <el-button icon="el-icon-folder-add" @click="createDir">新建文件夹</el-button>
-        <el-button icon="el-icon-download">下载</el-button>
+        <el-button icon="el-icon-download" @click="downloadFile">下载</el-button>
         <el-button icon="el-icon-delete" @click="deleteFiles">删除</el-button>
       </div>
     </el-row>
@@ -254,6 +254,50 @@
             type: 'error'
           });
         });
+      },
+      downloadFile(){
+        let goOnflag= false;
+        let  idStr ='';
+        this.ideSelection.forEach(value => {
+          if (value.type === 'dir'){
+            this.$message({
+              message: '请选择文件进行操作',
+              type: 'error'
+            });
+            goOnflag =true;
+            return;
+          }else{
+            idStr =idStr +value.id+',';
+          }
+
+        });
+        if (idStr.length>0){
+          idStr=idStr.substring(0,idStr.length-1);
+        }
+        if (goOnflag){
+          return;
+        }
+        this.$http({
+          method: "get",
+          url: "http://localhost:8088/file/downloadFile?data="+idStr,
+          responseType: 'blob'
+
+        }).then(res => {
+          let subBeginIndex =res.headers['content-disposition'].indexOf('=');
+          let fileNameStr =res.headers['content-disposition'].substring(subBeginIndex+1,res.headers['content-disposition'].length);
+          console.log(fileNameStr);
+          const blob = res.data;
+          const reader = new FileReader();
+          reader.readAsDataURL(blob);
+          reader.onload = (e) => {
+            const a = document.createElement('a');
+            a.download = fileNameStr;
+            a.href = e.target.result;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          }
+        })
       },
       getPageInfo(pid) {
         this.$http.get('http://localhost:8088/file/indexFilePage/?pid=' + pid + '&username=' + localStorage.getItem("username"))
