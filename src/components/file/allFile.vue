@@ -3,8 +3,9 @@
     <el-row style="padding-top: 2vh; padding-left: 3vh">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <!--        <el-breadcrumb-item :to="{ path: '/' }">全部文件</el-breadcrumb-item>-->
-        <el-breadcrumb-item  v-for="item in breadcrumbs" :key="item.breadName">
-          <span v-if="item.indexNum === 0" @click="reSetCurrentPid(item.currentPid,item.indexNum)">{{item.breadName}}</span>
+        <el-breadcrumb-item v-for="item in breadcrumbs" :key="item.breadName">
+          <span v-if="item.indexNum === 0"
+                @click="reSetCurrentPid(item.currentPid,item.indexNum)">{{item.breadName}}</span>
           <span v-else @click="goToPage(item.currentPid,item.indexNum)">{{item.breadName}}</span>
         </el-breadcrumb-item>
         <!--            <el-breadcrumb-item>活动管理</el-breadcrumb-item>
@@ -85,7 +86,7 @@
         <template slot-scope="scope">
           <span v-if="scope.row.type === 'dir'"></span>
           <span v-else>{{ parseFloat(scope.row.fileSize / 1024 /1024).toFixed(2)}} MB</span>
-      </template>
+        </template>
       </el-table-column>
       <el-table-column
         prop="modifyTime"
@@ -101,10 +102,10 @@
 </template>
 
 <script>
-  let Authorization =  localStorage.getItem('Authorization');
-  let username =  localStorage.getItem('username');
-  let dirPid =0;
-  let currentPidForCreate ={currPidForCreate:0};
+  let Authorization = localStorage.getItem('Authorization');
+  let username = localStorage.getItem('username');
+  let dirPid = 0;
+  let currentPidForCreate = {currPidForCreate: 0};
 
   export default {
     name: "allFile",
@@ -114,11 +115,11 @@
         multipleSelection: [],
         ideSelection: [],
         breadcrumbs: [
-          {breadName: '全部文件',currentPid:0,indexNum:0}
+          {breadName: '全部文件', currentPid: 0, indexNum: 0}
         ],
-        importHeaders: {'Authorization': Authorization,'username':username},
+        importHeaders: {'Authorization': Authorization, 'username': username},
         // currentPidForCreate:{currPidForCreate:0},
-        uploadData:{'username':username,'dirPid':currentPidForCreate}
+        uploadData: {'username': username, 'dirPid': currentPidForCreate}
 
 
       }
@@ -141,15 +142,15 @@
 
       handleSelectionChange(val) {
         console.log(val);
-
+        this.ideSelection = [];
         this.multipleSelection = val;
         this.multipleSelection.forEach(value => {
-          this.ideSelection.push({'id' : value.id, 'type':value.type});
+          this.ideSelection.push({'id': value.id, 'type': value.type});
 
         });
       },
       freshData(row, column, event) {
-        this.$http.get('http://localhost:8088/file/indexFilePage/?pid='+row.pid+'&username=' + localStorage.getItem("username"))
+        this.$http.get('http://localhost:8088/file/indexFilePage/?pid=' + row.pid + '&username=' + localStorage.getItem("username"))
           .then(resp => {
             console.log(resp.data.status === '0');
             console.log(resp);
@@ -163,10 +164,10 @@
               // alert(row.fileName);
               //这里的pid是为了在我们双击时，传的当前的文件夹id作为下一页展示的时候的父id
               this.breadcrumbs.push(
-                {breadName: row.fileName,currentPid:row.pid,indexNum:this.breadcrumbs.length}
+                {breadName: row.fileName, currentPid: row.pid, indexNum: this.breadcrumbs.length}
               );
               //这里的这个pid是为了我们子目录下创建文件夹时能取得他的父文件夹的id
-              currentPidForCreate.currPidForCreate=row.pid;
+              currentPidForCreate.currPidForCreate = row.pid;
 
             }
 
@@ -177,7 +178,7 @@
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(({value}) => {
-          this.$http.get('http://localhost:8088/file/createDir/?dirname=' + value + '&pid='+currentPidForCreate.currPidForCreate+' &username=' + localStorage.getItem("username"))
+          this.$http.get('http://localhost:8088/file/createDir/?dirname=' + value + '&pid=' + currentPidForCreate.currPidForCreate + ' &username=' + localStorage.getItem("username"))
             .then(resp => {
               if (resp.data.status === '0') {
                 this.$message({
@@ -199,19 +200,63 @@
 
         })
       },
-      handleSuccess(res, file ,fileList){
+      handleSuccess(res, file, fileList) {
         this.$refs.upload.clearFiles();
         this.tableData = res.data;
 
 
       },
-      goToPage(pid,indexNum){
+      goToPage(pid, indexNum) {
         // alert(indexNum);
-        for(let i = indexNum+1; i<this.breadcrumbs.length ;i++ ){
+        for (let i = indexNum + 1; i < this.breadcrumbs.length; i++) {
           let obj = this.breadcrumbs[i];
-            this.breadcrumbs.splice(i,1);
-        };
-        this.$http.get('http://localhost:8088/file/indexFilePage/?pid='+pid+'&username=' + localStorage.getItem("username"))
+          this.breadcrumbs.splice(i, 1);
+        }
+        ;
+        this.getPageInfo(pid);
+
+      },
+      reSetCurrentPid(pid, indexNum) {
+        this.goToPage(pid, indexNum);
+        //当我们点击全部文件的时候还原我们的currentPid=0
+        currentPidForCreate.currPidForCreate = 0;
+      },
+      beforeUpload(file) {
+        this.uploadData.dirPid = currentPidForCreate.currPidForCreate;
+
+      },
+      deleteFiles() {
+
+        this.$http({
+          method: "post",
+          url: "http://localhost:8088/file/deleteFile",
+          data: this.ideSelection,
+
+        }).then(resp => {  //响应结果
+          if (resp.data.status === '0') {
+            this.$message({
+              message: resp.data.msg,
+              type: 'error'
+            });
+          } else {
+            this.$message({
+              message: resp.data.msg,
+              type: 'success'
+            });
+            this.getPageInfo(currentPidForCreate.currPidForCreate);
+
+          }
+
+
+        }).catch(err => {
+          this.$message({
+            message: '请求失败：请检查服务是否可用',
+            type: 'error'
+          });
+        });
+      },
+      getPageInfo(pid) {
+        this.$http.get('http://localhost:8088/file/indexFilePage/?pid=' + pid + '&username=' + localStorage.getItem("username"))
           .then(resp => {
             if (resp.data.status === '0') {
               this.$message({
@@ -223,43 +268,6 @@
             }
 
           });
-      },
-      reSetCurrentPid(pid,indexNum){
-        this.goToPage(pid,indexNum);
-        //当我们点击全部文件的时候还原我们的currentPid=0
-        currentPidForCreate.currPidForCreate=0;
-      },
-      beforeUpload(file){
-        this.uploadData.dirPid=currentPidForCreate.currPidForCreate;
-
-      },
-      deleteFiles(){
-
-        this.$http({
-          method:"post",
-          url: "http://localhost:8088/file/deleteFile",
-          data: this.ideSelection,
-
-        }).then(resp => {  //响应结果
-          if(resp.data.status === '0'){
-            this.$message({
-              message: resp.data.msg,
-              type: 'error'
-            });
-          }else{
-            this.$message({
-              message: resp.data.msg,
-              type: 'success'
-            });
-          }
-
-
-        }).catch(err => {
-          this.$message({
-            message: '请求失败：请检查服务是否可用',
-            type: 'error'
-          });
-        });
       }
 
     }
