@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="backgru">
     <el-row>
       <el-col>
         <h1 style="float: left; padding-left: 12vh">百度网盘</h1>
@@ -22,6 +22,7 @@
 
 
     <el-row class="tac">
+      <div id="tabs">
       <el-col :span="4">
         <h5>Learn More, Unknown More.</h5>
         <el-menu
@@ -62,7 +63,7 @@
 
         </el-menu>
       </el-col>
-
+      </div>
       <el-col :span="20">
 
 
@@ -114,7 +115,7 @@
 
 </script>
 
-<style scoped>
+<style  scoped>
   a {
     text-decoration: none;
   }
@@ -122,4 +123,20 @@
   .router-link-active {
     text-decoration: none;
   }
+  #backgru{
+    background: rgb(191,166,177);
+    background: linear-gradient(227deg, rgba(191,166,177,1) 0%, rgba(167,213,235,1) 49%, rgba(234,214,214,0.9867297260701156) 100%);
+    /*opacity: 0.1;*/
+    height: 100vh;
+    width: 100%;
+
+  }
+  #backgru >>> .el-menu{
+    background-color:transparent;
+  }
+  #backgru >>> .el-button{
+    background-color:transparent;
+  }
+
+
 </style>

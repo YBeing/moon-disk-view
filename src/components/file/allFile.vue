@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-left: 4vh">
+  <div id="backgrou2" style="padding-left: 4vh">
     <el-row style="padding-top: 2vh; padding-left: 3vh">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <!--        <el-breadcrumb-item :to="{ path: '/' }">全部文件</el-breadcrumb-item>-->
@@ -40,6 +40,7 @@
       tooltip-effect="dark"
       @row-dblclick="freshData"
       style="width: 100%"
+
       @selection-change="handleSelectionChange">
       <el-table-column
         type="selection"
@@ -258,6 +259,12 @@
       downloadFile(){
         let goOnflag= false;
         let  idStr ='';
+        if(this.ideSelection.length > 1){
+          this.$message({
+            message: '最多支持下载一个文件',
+            type: 'error'
+          });
+        }
         this.ideSelection.forEach(value => {
           if (value.type === 'dir'){
             this.$message({
@@ -267,19 +274,17 @@
             goOnflag =true;
             return;
           }else{
-            idStr =idStr +value.id+',';
+            idStr =idStr +value.id;
           }
 
         });
-        if (idStr.length>0){
-          idStr=idStr.substring(0,idStr.length-1);
-        }
+
         if (goOnflag){
           return;
         }
         this.$http({
           method: "get",
-          url: "http://localhost:8088/file/downloadFile?data="+idStr,
+          url: "http://localhost:8088/file/downloadFile?id="+idStr,
           responseType: 'blob'
 
         }).then(res => {
@@ -317,3 +322,31 @@
     }
   }
 </script>
+<style    lang="less">
+  .el-table{
+    background-color: transparent;
+    color: rgba(10, 3, 9, 0.96);
+    .el-table__header-wrapper{
+      tr{
+        background-color: transparent;
+
+        th{
+          color: rgba(36, 36, 36, 0.88);
+          background-color: transparent;
+
+        }
+      }
+    }
+    .el-table__body-wrapper{
+      tr{
+        background-color: transparent;
+
+        &:hover>td{      //修改悬浮背景色
+          background-color: transparent;
+
+        }
+      }
+    }
+  }
+
+</style>

@@ -6,9 +6,10 @@ import router from './router'
 import axios from 'axios';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import less from 'less';
 
 Vue.use(ElementUI);
-
+Vue.use(less);
 Vue.config.productionTip = false;
 // axios.defaults.withCredentials=true;
 Vue.prototype.$http=axios;
