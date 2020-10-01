@@ -1,94 +1,46 @@
 <template>
   <div>
-    <el-button @click="resetDateFilter">清除日期过滤器</el-button>
-    <el-button @click="clearFilter">清除所有过滤器</el-button>
-    <el-table
-      ref="filterTable"
-      :data="tableData"
-      style="width: 100%">
-      <el-table-column
-        prop="date"
-        label="日期"
-        sortable
-        width="180"
-        column-key="date"
-        :filters="[{text: '2016-05-01', value: '2016-05-01'}, {text: '2016-05-02', value: '2016-05-02'}, {text: '2016-05-03', value: '2016-05-03'}, {text: '2016-05-04', value: '2016-05-04'}]"
-        :filter-method="filterHandler"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址"
-        :formatter="formatter">
-      </el-table-column>
-      <el-table-column
-        prop="tag"
-        label="标签"
-        width="100"
-        :filters="[{ text: '家', value: '家' }, { text: '公司', value: '公司' }]"
-        :filter-method="filterTag"
-        filter-placement="bottom-end">
-        <template slot-scope="scope">
-          <el-tag
-            :type="scope.row.tag === '家' ? 'primary' : 'success'"
-            disable-transitions>{{scope.row.tag}}
-          </el-tag>
-        </template>
-      </el-table-column>
-    </el-table>
+    <el-row>
+      <router-link to="/imageTimeLine">
+        <el-button size="medium" style="float: left; margin-left: 1vh">时光轴
+        </el-button>
+      </router-link>
+      <router-link to="/imageRecent">
+        <el-button size="medium" style="float: left; margin-left: 2vh">最近上传
+        </el-button>
+      </router-link>
+      <el-input
+        placeholder="搜索你的图片~"
+        prefix-icon="el-icon-search"
+        v-model="input2" style="width: 200px; padding-left: 70vh; margin-bottom: 2vh">
+      </el-input>
+
+    </el-row>
+    <el-row>
+      <router-view></router-view>
+    </el-row>
+
   </div>
 </template>
 
 <script>
   export default {
-    name:"imageFile",
+    name: "imageFile",
     data() {
       return {
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-          tag: '家'
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄',
-          tag: '公司'
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1519 弄',
-          tag: '家'
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1516 弄',
-          tag: '公司'
-        }]
+        url: 'http://192.168.0.105:8888/group1/M00/00/00/wKgAaV90ocCAJxg-AAcppDDlZRk425.png',
+        srcList: [
+          'http://192.168.0.105:8888/group1/M00/00/00/wKgAaV90ocCAJxg-AAcppDDlZRk425.png'
+        ],
+        imageInfo: []
       }
     },
-    methods: {
-      resetDateFilter() {
-        this.$refs.filterTable.clearFilter('date');
-      },
-      clearFilter() {
-        this.$refs.filterTable.clearFilter();
-      },
-      formatter(row, column) {
-        return row.address;
-      },
-      filterTag(value, row) {
-        return row.tag === value;
-      },
-      filterHandler(value, row, column) {
-        const property = column['property'];
-        return row[property] === value;
-      }
+    mounted: function () {
+      this.$router.push('/imageTimeLine');
     }
   }
 </script>
+
+<style scoped>
+
+</style>

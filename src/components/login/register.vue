@@ -48,7 +48,7 @@
       register(){
         this.$http({
           method:"post",
-          url: "http://localhost:8088//user/register",
+          url: "http://localhost:8088/user/register",
           data: {
             username: this.username,
             password: this.password
@@ -79,13 +79,21 @@
 <style scoped>
   /*  正常我们设置的背景图 会自带margin 为8px的属性，也就是我们的背景图会有留白，无法全部铺满，
     需要在主文件下的index.html 设置他的body样式为 margin 为0*/
-  #background{
+  /*#background{
     text-align: center;
     height: 100%;
     width: 100%;
     background-image: url("../../assets/pexels-raphael-brasileiro-2920849.jpg");
     background-size: 100% 100%;
     position: fixed;
+
+  }*/
+  #background {
+    background: rgb(191, 166, 177);
+    background: linear-gradient(227deg, rgba(191, 166, 177, 1) 0%, rgba(167, 213, 235, 1) 49%, rgba(234, 214, 214, 0.9867297260701156) 100%);
+    /*opacity: 0.1;*/
+    height: 100vh;
+    width: 100%;
 
   }
   #loginForm{

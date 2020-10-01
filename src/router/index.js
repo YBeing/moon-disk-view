@@ -5,6 +5,8 @@ import Register from '@/components/login/register'
 import DiskMain from '@/components/file/diskMain'
 import AllFile from '@/components/file/allFile'
 import ImageFile from '@/components/file/imageFile'
+import ImageTimeLine from '@/components/file/image/imageTimeLine'
+import ImageRecent from '@/components/file/image/imageRecent'
 
 Vue.use(Router)
 
@@ -29,17 +31,33 @@ export default new Router({
       path: "/diskMain",
       name: "diskMain",
       component: DiskMain,
-      children:[
+      children: [
         {
-          path:"/allFile",
-          component:AllFile
+          path: "/allFile",
+          component: AllFile
         },
         {
-          path:"/imageFile",
-          component:ImageFile
+          path: "/imageFile",
+          component: ImageFile,
+          children: [
+            {
+              path: "/imageTimeLine",
+              component: ImageTimeLine
+
+            },
+            {
+              path: "/imageRecent",
+              component: ImageRecent
+            }
+          ]
+
         }
       ]
-    }
+    },
+
+
+
+
   ]
 });
 

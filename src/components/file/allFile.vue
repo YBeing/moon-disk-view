@@ -48,7 +48,7 @@
       </el-table-column>
       <el-table-column
         label="文件名"
-        width="900">
+        width="800">
         <template slot-scope="scope">
           <div v-if="scope.row.type === 'dir'">
             <i class="el-icon-folder"></i>
@@ -91,7 +91,8 @@
       </el-table-column>
       <el-table-column
         prop="modifyTime"
-        label="修改日期"
+        label="创建日期"
+        width="200"
         show-overflow-tooltip>
       </el-table-column>
     </el-table>
