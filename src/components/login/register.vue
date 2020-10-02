@@ -48,7 +48,7 @@
       register(){
         this.$http({
           method:"post",
-          url: "http://localhost:8088/user/register",
+          url: "user/register",
           data: {
             username: this.username,
             password: this.password

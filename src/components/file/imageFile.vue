@@ -45,7 +45,7 @@
     },
     methods: {
       searchImage(){
-        this.$http.get('http://localhost:8088/file/searchImage?keyWord='+this.formInline.keyWord)
+        this.$http.get('file/searchImage?keyWord='+this.formInline.keyWord)
           .then( resp => {
             this.nginxViewList = resp.data.data.nginxViewList;
               this.$router.push({

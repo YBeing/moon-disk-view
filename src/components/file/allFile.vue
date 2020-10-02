@@ -14,7 +14,7 @@
         <el-upload
           class="upload-demo"
           ref="upload"
-          action="http://localhost:8088/file/upload"
+          action="file/upload"
           :limit="1"
           :show-file-list="true"
           :before-upload="beforeUpload"
@@ -120,7 +120,7 @@
       }
     },
     mounted: function () {
-      this.$http.get('http://localhost:8088/file/indexFilePage/?pid=0 &username=' + localStorage.getItem("username"))
+      this.$http.get('file/indexFilePage/?pid=0 &username=' + localStorage.getItem("username"))
         .then(resp => {
           if (resp.data.status === '0') {
             this.$message({
@@ -145,7 +145,7 @@
         });
       },
       freshData(row, column, event) {
-        this.$http.get('http://localhost:8088/file/indexFilePage/?pid=' + row.pid + '&username=' + localStorage.getItem("username"))
+        this.$http.get('file/indexFilePage/?pid=' + row.pid + '&username=' + localStorage.getItem("username"))
           .then(resp => {
             console.log(resp.data.status === '0');
             console.log(resp);
@@ -173,7 +173,7 @@
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(({value}) => {
-          this.$http.get('http://localhost:8088/file/createDir/?dirname=' + value + '&pid=' + currentPidForCreate.currPidForCreate + ' &username=' + localStorage.getItem("username"))
+          this.$http.get('file/createDir/?dirname=' + value + '&pid=' + currentPidForCreate.currPidForCreate + ' &username=' + localStorage.getItem("username"))
             .then(resp => {
               if (resp.data.status === '0') {
                 this.$message({
@@ -224,7 +224,7 @@
 
         this.$http({
           method: "post",
-          url: "http://localhost:8088/file/deleteFile",
+          url: "file/deleteFile",
           data: this.ideSelection,
 
         }).then(resp => {  //响应结果
@@ -278,7 +278,7 @@
         }
         this.$http({
           method: "get",
-          url: "http://localhost:8088/file/downloadFile?id="+idStr,
+          url: "file/downloadFile?id="+idStr,
           responseType: 'blob'
 
         }).then(res => {
@@ -299,7 +299,7 @@
         })
       },
       getPageInfo(pid) {
-        this.$http.get('http://localhost:8088/file/indexFilePage/?pid=' + pid + '&username=' + localStorage.getItem("username"))
+        this.$http.get('file/indexFilePage/?pid=' + pid + '&username=' + localStorage.getItem("username"))
           .then(resp => {
             if (resp.data.status === '0') {
               this.$message({

@@ -39,7 +39,7 @@
 
       this.$http({
         method: "get",
-        url: "http://localhost:8088/file/getAllImage",
+        url: "file/getAllImage",
 
       }).then(resp => {  //响应结果
         this.allImageInfo = resp.data.data.nginxViewList;

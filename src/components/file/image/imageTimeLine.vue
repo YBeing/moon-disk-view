@@ -29,7 +29,7 @@
     mounted: function () {
       this.$http({
         method: "get",
-        url: "http://localhost:8088/file/getImageGroupByDate",
+        url: "file/getImageGroupByDate",
 
       }).then(resp => {  //响应结果
         this.imageInfo = resp.data.data;

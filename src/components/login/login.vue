@@ -45,7 +45,7 @@
     methods: {
 
       login() {
-        /*this.$http.get('http://localhost:8088/login?username='+this.username+'&password='+this.password)
+        /*this.$http.get('login?username='+this.username+'&password='+this.password)
          .then( resp => {
            console.log(resp.data.status ==='0');
            console.log(resp);
@@ -70,7 +70,7 @@
          })*/
         this.$http({
           method: "post",
-          url: "http://localhost:8088/user/login",
+          url: "user/login",
           data: {
             username: this.username,
             password: this.password
