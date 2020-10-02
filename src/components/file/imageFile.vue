@@ -2,18 +2,23 @@
   <div>
     <el-row>
       <router-link to="/imageTimeLine">
-        <el-button size="medium" style="float: left; margin-left: 1vh">时光轴
+        <el-button size="medium" style="float: left; margin-left: 1vh" @click="viewBind0">时光轴
         </el-button>
       </router-link>
       <router-link to="/imageRecent">
-        <el-button size="medium" style="float: left; margin-left: 2vh">最近上传
+        <el-button size="medium" style="float: left; margin-left: 2vh" @click="viewBind1">最近上传
         </el-button>
       </router-link>
-      <el-input
-        placeholder="搜索你的图片~"
-        prefix-icon="el-icon-search"
-        v-model="input2" style="width: 200px; padding-left: 70vh; margin-bottom: 2vh">
-      </el-input>
+
+      <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form-item >
+          <el-input style="width: 300px" v-model="formInline.keyWord" placeholder="查询图片,日期:yyyy-MM-dd,名称:xxx"></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="searchImage">查询</el-button>
+        </el-form-item>
+      </el-form>
 
     </el-row>
     <el-row>
@@ -28,15 +33,38 @@
     name: "imageFile",
     data() {
       return {
-        url: 'http://192.168.0.105:8888/group1/M00/00/00/wKgAaV90ocCAJxg-AAcppDDlZRk425.png',
-        srcList: [
-          'http://192.168.0.105:8888/group1/M00/00/00/wKgAaV90ocCAJxg-AAcppDDlZRk425.png'
-        ],
-        imageInfo: []
+        formInline: {
+          keyWord: ''
+        },
+        nginxViewList:[],
+        searchViewBind:0
       }
     },
     mounted: function () {
       this.$router.push('/imageTimeLine');
+    },
+    methods: {
+      searchImage(){
+        this.$http.get('http://localhost:8088/file/searchImage?keyWord='+this.formInline.keyWord)
+          .then( resp => {
+            this.nginxViewList = resp.data.data.nginxViewList;
+              this.$router.push({
+                name:'imageRecent',
+                query : {
+                routeParams:  this.nginxViewList
+              }
+              }
+            );
+
+
+          })
+      },
+      viewBind0(){
+        this.searchViewBind=0;
+      },
+      viewBind1(){
+        this.searchViewBind=1;
+      }
     }
   }
 </script>

@@ -3,11 +3,6 @@
     <div style="text-align: left" >
       <div  v-for="imageItem in imageInfo" >
         <h4>{{imageItem.modifyTime}}</h4>
-        <!--<el-image v-for="urlStr in imageItem.nginxViewList"
-          style="width: 100px; height: 100px"
-          :src="urlStr"
-          :preview-src-list="urlStr">
-        </el-image>-->
         <div style="display: inline; width: 520px; height: 130px" v-for="urlStr in imageItem.nginxViewList"  >
           <el-image
             style="width: 130px; height: 130px;  "

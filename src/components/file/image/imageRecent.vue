@@ -30,10 +30,13 @@
     name: "imageRecent",
     data() {
       return {
-        allImageInfo: []
+        allImageInfo: [],
+        searchImageInfo: this.$route.query.routeParams,
       }
     },
     mounted: function () {
+      alert(this.searchImageInfo);
+
       this.$http({
         method: "get",
         url: "http://localhost:8088/file/getAllImage",
