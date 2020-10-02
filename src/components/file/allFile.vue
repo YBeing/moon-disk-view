@@ -2,15 +2,11 @@
   <div id="backgrou2" style="padding-left: 4vh">
     <el-row style="padding-top: 2vh; padding-left: 3vh">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <!--        <el-breadcrumb-item :to="{ path: '/' }">全部文件</el-breadcrumb-item>-->
         <el-breadcrumb-item v-for="item in breadcrumbs" :key="item.breadName">
           <span v-if="item.indexNum === 0"
                 @click="reSetCurrentPid(item.currentPid,item.indexNum)">{{item.breadName}}</span>
           <span v-else @click="goToPage(item.currentPid,item.indexNum)">{{item.breadName}}</span>
         </el-breadcrumb-item>
-        <!--            <el-breadcrumb-item>活动管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-                    <el-breadcrumb-item>活动详情</el-breadcrumb-item>-->
       </el-breadcrumb>
     </el-row>
     <el-row>
@@ -96,10 +92,7 @@
         show-overflow-tooltip>
       </el-table-column>
     </el-table>
-    <!--    <div style="margin-top: 20px">
-          <el-button @click="toggleSelection([tableData[1], tableData[2]])">切换第二、第三行的选中状态</el-button>
-          <el-button @click="toggleSelection()">取消选择</el-button>
-        </div>-->
+
   </div>
 </template>
 
