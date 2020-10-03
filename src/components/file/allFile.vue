@@ -14,7 +14,7 @@
         <el-upload
           class="upload-demo"
           ref="upload"
-          action="file/upload"
+          action="http://121.196.29.156:8088/file/upload"
           :limit="1"
           :show-file-list="true"
           :before-upload="beforeUpload"
@@ -30,68 +30,71 @@
         <el-button icon="el-icon-delete" @click="deleteFiles">删除</el-button>
       </div>
     </el-row>
-    <el-table
-      ref="multipleTable"
-      :data="tableData"
-      tooltip-effect="dark"
-      @row-dblclick="freshData"
-      style="width: 100%"
+    <div class="el-table-div">
 
-      @selection-change="handleSelectionChange">
-      <el-table-column
-        type="selection"
-        width="50">
-      </el-table-column>
-      <el-table-column
-        label="文件名"
-        width="800">
-        <template slot-scope="scope">
-          <div v-if="scope.row.type === 'dir'">
-            <i class="el-icon-folder"></i>
-            <span>{{ scope.row.fileName }}</span>
-          </div>
-          <div v-else-if="scope.row.type === 'music'">
-            <i class="el-icon-headset"></i>
-            <span>{{ scope.row.fileName }}</span>
-          </div>
-          <div v-else-if="scope.row.type === 'pdf'">
-            <i class="el-icon-reading"></i>
-            <span>{{ scope.row.fileName }}</span>
-          </div>
-          <div v-else-if="scope.row.type === 'zip'">
-            <i class="el-icon-film"></i>
-            <span>{{ scope.row.fileName }}</span>
-          </div>
-          <div v-else-if="scope.row.type === 'txt'">
-            <i class="el-icon-tickets"></i>
-            <span>{{ scope.row.fileName }}</span>
-          </div>
-          <div v-else-if="scope.row.type === 'doc'">
-            <i class="el-icon-document-copy"></i>
-            <span>{{ scope.row.fileName }}</span>
-          </div>
-          <div v-else-if="scope.row.type === 'png' || scope.row.type === 'jpg'">
-            <i class="el-icon-picture"></i>
-            <span>{{ scope.row.fileName }}</span>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column
-        label="大小"
-        width="200">
-        <!--prop="fileSize"-->
-        <template slot-scope="scope">
-          <span v-if="scope.row.type === 'dir'"></span>
-          <span v-else>{{ parseFloat(scope.row.fileSize / 1024 /1024).toFixed(2)}} MB</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="modifyTime"
-        label="创建日期"
-        width="200"
-        show-overflow-tooltip>
-      </el-table-column>
-    </el-table>
+      <el-table
+        ref="multipleTable"
+        :data="tableData"
+        tooltip-effect="dark"
+        @row-dblclick="freshData"
+        style="width: 100%"
+        :header-cell-style="tableHeaderColor"
+        @selection-change="handleSelectionChange">
+        <el-table-column
+          type="selection"
+          width="50">
+        </el-table-column>
+        <el-table-column
+          label="文件名"
+          width="800">
+          <template slot-scope="scope">
+            <div v-if="scope.row.type === 'dir'">
+              <i class="el-icon-folder"></i>
+              <span>{{ scope.row.fileName }}</span>
+            </div>
+            <div v-else-if="scope.row.type === 'music'">
+              <i class="el-icon-headset"></i>
+              <span>{{ scope.row.fileName }}</span>
+            </div>
+            <div v-else-if="scope.row.type === 'pdf'">
+              <i class="el-icon-reading"></i>
+              <span>{{ scope.row.fileName }}</span>
+            </div>
+            <div v-else-if="scope.row.type === 'zip'">
+              <i class="el-icon-film"></i>
+              <span>{{ scope.row.fileName }}</span>
+            </div>
+            <div v-else-if="scope.row.type === 'txt'">
+              <i class="el-icon-tickets"></i>
+              <span>{{ scope.row.fileName }}</span>
+            </div>
+            <div v-else-if="scope.row.type === 'doc'">
+              <i class="el-icon-document-copy"></i>
+              <span>{{ scope.row.fileName }}</span>
+            </div>
+            <div v-else-if="scope.row.type === 'png' || scope.row.type === 'jpg'">
+              <i class="el-icon-picture"></i>
+              <span>{{ scope.row.fileName }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="大小"
+          width="200">
+          <!--prop="fileSize"-->
+          <template slot-scope="scope">
+            <span v-if="scope.row.type === 'dir'"></span>
+            <span v-else>{{ parseFloat(scope.row.fileSize / 1024 /1024).toFixed(2)}} MB</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="modifyTime"
+          label="创建日期"
+          width="200"
+          show-overflow-tooltip>
+        </el-table-column>
+      </el-table>
+    </div>
 
   </div>
 </template>
@@ -250,40 +253,40 @@
           });
         });
       },
-      downloadFile(){
-        let goOnflag= false;
-        let  idStr ='';
-        if(this.ideSelection.length > 1){
+      downloadFile() {
+        let goOnflag = false;
+        let idStr = '';
+        if (this.ideSelection.length > 1) {
           this.$message({
             message: '最多支持下载一个文件',
             type: 'error'
           });
         }
         this.ideSelection.forEach(value => {
-          if (value.type === 'dir'){
+          if (value.type === 'dir') {
             this.$message({
               message: '请选择文件进行操作',
               type: 'error'
             });
-            goOnflag =true;
+            goOnflag = true;
             return;
-          }else{
-            idStr =idStr +value.id;
+          } else {
+            idStr = idStr + value.id;
           }
 
         });
 
-        if (goOnflag){
+        if (goOnflag) {
           return;
         }
         this.$http({
           method: "get",
-          url: "file/downloadFile?id="+idStr,
+          url: "file/downloadFile?id=" + idStr,
           responseType: 'blob'
 
         }).then(res => {
-          let subBeginIndex =res.headers['content-disposition'].indexOf('=');
-          let fileNameStr =res.headers['content-disposition'].substring(subBeginIndex+1,res.headers['content-disposition'].length);
+          let subBeginIndex = res.headers['content-disposition'].indexOf('=');
+          let fileNameStr = res.headers['content-disposition'].substring(subBeginIndex + 1, res.headers['content-disposition'].length);
           console.log(fileNameStr);
           const blob = res.data;
           const reader = new FileReader();
@@ -311,36 +314,35 @@
             }
 
           });
+      },
+
+      //设置表头行的样式
+      tableHeaderColor({row, column, rowIndex, columnIndex}) {
+        return 'background-color:transparent;font-size:15px;'
+
       }
 
     }
   }
 </script>
-<style    lang="less">
-  .el-table{
+
+<style>
+
+
+  .el-table-div /deep/  .el-table, .el-table__expanded-cell {
     background-color: transparent;
-    color: rgba(10, 3, 9, 0.96);
-    .el-table__header-wrapper{
-      tr{
-        background-color: transparent;
-
-        th{
-          color: rgba(36, 36, 36, 0.88);
-          background-color: transparent;
-
-        }
-      }
-    }
-    .el-table__body-wrapper{
-      tr{
-        background-color: transparent;
-
-        &:hover>td{      //修改悬浮背景色
-          background-color: transparent;
-
-        }
-      }
-    }
   }
 
+  .el-table-div /deep/ .el-table tr {
+    background-color: transparent!important;
+  }
+  .el-table-div /deep/  .el-table--enable-row-transition .el-table__body td, .el-table .cell{
+    background-color: transparent;
+  }
+  .el-table::before {//去除底部白线
+  left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 0px;
+  }
 </style>
