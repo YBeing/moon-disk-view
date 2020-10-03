@@ -326,7 +326,7 @@
   }
 </script>
 
-<style>
+<style scoped>
 
 
   .el-table-div /deep/  .el-table, .el-table__expanded-cell {
