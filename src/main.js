@@ -26,7 +26,7 @@ router.beforeEach((to, from, next) => {
     next()
   } else {
     // 这里的meta就是我们刚刚在路由里面配置的meta, key为登录token验证,未获取到token则强制跳转到登录页面（key需先在登录页面本地存储）
-    if (!localStorage.getItem('Authorization')) {
+    if (!localStorage.getItem('Authorization') && to.path !== '/register') {
 
       next({
         path: '/login'
