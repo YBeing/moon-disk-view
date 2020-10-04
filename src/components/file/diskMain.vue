@@ -39,7 +39,7 @@
               <el-menu-item-group>
                 <router-link to="/allFile">
                   <el-menu-item index="1-1">
-                    <span style=" text-decoration: none; ">全部文件</span>
+                    <span style=" text-decoration: none; ">全部</span>
                   </el-menu-item>
                 </router-link>
                 <router-link to="/imageFile">
@@ -59,9 +59,9 @@
 
             </el-submenu>
 
-            <el-menu-item index="2">
+            <el-menu-item  index="2">
               <i class="el-icon-delete"></i>
-              <span slot="title">回收站</span>
+              <span slot="title" style="font-size: 15px; font-weight: bold">回收站</span>
             </el-menu-item>
 
           </el-menu>
@@ -116,7 +116,7 @@
 
 </script>
 
-<style scoped>
+<!--<style scoped>
   a {
     text-decoration: none;
   }
@@ -143,4 +143,43 @@
   }
 
 
+</style>-->
+<style>
+  a {
+    text-decoration: none;
+  }
+
+  .router-link-active {
+    text-decoration: none;
+  }
+
+  #backgru {
+    /*background: rgb(191, 166, 177);
+    background: linear-gradient(227deg, rgba(191, 166, 177, 1) 0%, rgba(167, 213, 235, 1) 49%, rgba(234, 214, 214, 0.9867297260701156) 100%);
+    !*opacity: 0.1;*!
+    height: 100vh;*/
+    width: 100%;
+
+  }
+
+  .el-menu {
+    background-color: transparent;
+  }
+
+  .el-button {
+    background-color: transparent;
+  }
+  .el-menu-item.is-active{
+    color: black;
+  }
+  .el-menu-item{
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  .el-submenu__title{
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+  }
 </style>

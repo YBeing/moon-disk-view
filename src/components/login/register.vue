@@ -89,8 +89,10 @@
 
   }*/
   #background {
-    background: rgb(191, 166, 177);
-    background: linear-gradient(227deg, rgba(191, 166, 177, 1) 0%, rgba(167, 213, 235, 1) 49%, rgba(234, 214, 214, 0.9867297260701156) 100%);
+    /*background: rgb(191, 166, 177);*/
+    /*background: linear-gradient(227deg, rgba(191, 166, 177, 1) 0%, rgba(167, 213, 235, 1) 49%, rgba(234, 214, 214, 0.9867297260701156) 100%);*/
+    background: rgb(191,166,177);
+    background: linear-gradient(227deg, rgba(191,166,177,1) 0%, rgba(167,213,235,1) 49%, rgba(234,214,214,0.9867297260701156) 100%);
     /*opacity: 0.1;*/
     height: 100vh;
     width: 100%;

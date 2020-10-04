@@ -32,7 +32,7 @@
           :headers=importHeaders
           :data=uploadData
           style="float: left; padding-right: 1vh">
-          <el-button icon="el-icon-upload" type="primary">上传</el-button>
+          <el-button icon="el-icon-upload" >上传</el-button>
         </el-upload>
         <el-button icon="el-icon-folder-add" @click="createDir">新建文件夹</el-button>
         <el-button icon="el-icon-download" @click="downloadFile">下载</el-button>
