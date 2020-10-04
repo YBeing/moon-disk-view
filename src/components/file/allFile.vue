@@ -1,6 +1,8 @@
 <template>
   <div id="backgrou2" style="padding-left: 4vh">
-    <el-row style="padding-top: 2vh; padding-left: 3vh">
+    <el-row style="padding-top: 1vh; padding-left: 3vh">
+      <el-col :span="8">
+
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item v-for="item in breadcrumbs" :key="item.breadName">
           <span v-if="item.indexNum === 0"
@@ -8,6 +10,13 @@
           <span v-else @click="goToPage(item.currentPid,item.indexNum)">{{item.breadName}}</span>
         </el-breadcrumb-item>
       </el-breadcrumb>
+      </el-col>
+      <el-col :span="8" :offset="8">
+        <span style=" font-size: 13px;font-weight: bold">人就是在不断的选择的矛盾中,戴上面具，焚烧过去,武装自己</span><br>
+        <span style="padding-bottom: 6vh; padding-left: 37vh; font-size: 13px; font-weight: bold">
+          一夏目漱石
+        </span>
+      </el-col>
     </el-row>
     <el-row>
       <div style="float: left; padding-left: 0vh; padding-top: 2vh">

@@ -5,7 +5,7 @@
         <el-button style="color: black; padding-left: 1vh" type="text">全部文件</el-button>
       </el-col>
       <el-col :span="4" :offset="16">
-        <span style="font-size: 13px">已全部加载共166个</span>
+        <span style="font-size: 13px">已全部加载共{{allImageInfo.length}}个</span>
       </el-col>
     </el-row>
     <el-row>
@@ -31,7 +31,6 @@
     data() {
       return {
         allImageInfo: [],
-        searchImageInfo: this.$route.query.routeParams,
       }
     },
     mounted: function () {

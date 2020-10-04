@@ -7,6 +7,7 @@ import AllFile from '@/components/file/allFile'
 import ImageFile from '@/components/file/imageFile'
 import ImageTimeLine from '@/components/file/image/imageTimeLine'
 import ImageRecent from '@/components/file/image/imageRecent'
+import ImageSearch from '@/components/file/image/imageSearch'
 
 Vue.use(Router)
 
@@ -48,6 +49,10 @@ export default new Router({
             {
               path: "/imageRecent",
               component: ImageRecent
+            },
+            {
+              path: "/imageSearch",
+              component: ImageSearch
             }
           ]
 

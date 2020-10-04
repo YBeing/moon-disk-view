@@ -11,8 +11,8 @@
             <i class="el-icon-arrow-down el-icon-user-solid"></i>
           </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item icon="el-icon-top" command="login">登出</el-dropdown-item>
               <el-dropdown-item icon="el-icon-circle-plus" command="register">注册</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-top" command="login">登出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -25,7 +25,7 @@
     <el-row class="tac">
       <div id="tabs">
         <el-col :span="4">
-          <h5>Learn More, Unknown More.</h5>
+          <h5 style="font-size: 13px; font-weight: bold">也许你望着月亮时, 我正在想你 ^_^</h5>
           <el-menu
             default-active="1-1"
             class="el-menu-vertical-demo"
