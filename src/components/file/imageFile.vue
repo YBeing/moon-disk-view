@@ -10,9 +10,9 @@
         </el-button>
       </router-link>
 
-      <el-form :inline="true" :model="formInline" class="demo-form-inline">
+      <el-form :inline="true" :model="formInline" class="demo-form-inline" style="margin-left: 100vh">
         <el-form-item >
-          <el-input style="width: 300px" v-model="formInline.keyWord" placeholder="查询图片,日期:yyyy-MM-dd,名称:xxx"></el-input>
+          <el-input style="width: 250px" v-model="formInline.keyWord" placeholder="条件:日期:yyyy-MM-dd,名称:xxx"></el-input>
         </el-form-item>
 
         <el-form-item>

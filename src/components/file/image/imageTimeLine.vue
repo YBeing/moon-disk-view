@@ -29,7 +29,7 @@
     mounted: function () {
       this.$http({
         method: "get",
-        url: "file/getImageGroupByDate",
+        url: "file/getImageGroupByDate?username="+localStorage.getItem('username')
 
       }).then(resp => {  //响应结果
         this.imageInfo = resp.data.data;
@@ -38,6 +38,9 @@
   }
 </script>
 
-<style scoped>
-
+<style>
+  .el-input__inner{
+    background-color: rgba(0,0,0,.2);
+    /*background-color: transparent;*/
+  }
 </style>

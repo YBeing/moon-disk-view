@@ -2,11 +2,12 @@
   <div id="backgru">
     <el-row>
       <el-col>
-        <h1 style="float: left; padding-left: 12vh">LyingDisk</h1>
+
+        <h1 style="float: left; padding-left: 4vh"><i class="el-icon-moon-night"></i> MoonDisk</h1>
         <div style="padding-top: 3vh; padding-left: 170vh">
           <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">
-            Elusive
+            {{username}}
             <i class="el-icon-arrow-down el-icon-user-solid"></i>
           </span>
             <el-dropdown-menu slot="dropdown">
@@ -33,7 +34,7 @@
             <el-submenu index="1">
               <template slot="title">
                 <i class="el-icon-s-home"></i>
-                <span>全部文件</span>
+                <span>首页</span>
               </template>
               <el-menu-item-group>
                 <router-link to="/allFile">
@@ -88,7 +89,8 @@
     name: "diskMain",
     data() {
       return {
-        importHeaders: {'Authorization': Authorization, 'username': username}
+        importHeaders: {'Authorization': Authorization, 'username': username},
+        username:localStorage.getItem('username')
       };
     },
 
@@ -124,10 +126,10 @@
   }
 
   #backgru {
-    background: rgb(191, 166, 177);
+    /*background: rgb(191, 166, 177);
     background: linear-gradient(227deg, rgba(191, 166, 177, 1) 0%, rgba(167, 213, 235, 1) 49%, rgba(234, 214, 214, 0.9867297260701156) 100%);
-    /*opacity: 0.1;*/
-    height: 100vh;
+    !*opacity: 0.1;*!
+    height: 100vh;*/
     width: 100%;
 
   }

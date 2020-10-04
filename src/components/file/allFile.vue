@@ -14,7 +14,7 @@
         <el-upload
           class="upload-demo"
           ref="upload"
-          action="http://121.196.29.156:8088/file/upload"
+          action="http://localhost:8088/file/upload"
           :limit="1"
           :show-file-list="true"
           :before-upload="beforeUpload"
@@ -90,7 +90,7 @@
         <el-table-column
           prop="modifyTime"
           label="创建日期"
-          width="200"
+          width="150"
           show-overflow-tooltip>
         </el-table-column>
       </el-table>

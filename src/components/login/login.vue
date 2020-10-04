@@ -93,7 +93,7 @@
 
             localStorage.setItem("Authorization", resp.data.data.token);
             localStorage.setItem("username", resp.data.data.username);
-            this.$router.push('/diskMain');
+            this.$router.push('/allFile');
           }
 
 

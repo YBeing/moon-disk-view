@@ -35,11 +35,9 @@
       }
     },
     mounted: function () {
-      alert(this.searchImageInfo);
-
       this.$http({
         method: "get",
-        url: "file/getAllImage",
+        url: "file/getAllImage?username="+localStorage.getItem('username')
 
       }).then(resp => {  //响应结果
         this.allImageInfo = resp.data.data.nginxViewList;
