@@ -7,7 +7,10 @@ import axios from 'axios';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import less from 'less';
+import AudioPlayer from '@liripeng/vue-audio-player';
+import '@liripeng/vue-audio-player/lib/vue-audio-player.css';
 
+Vue.use(AudioPlayer);
 Vue.use(ElementUI);
 Vue.use(less);
 Vue.config.productionTip = false;

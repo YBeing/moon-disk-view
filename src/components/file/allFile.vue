@@ -3,13 +3,13 @@
     <el-row style="padding-top: 1vh; padding-left: 3vh">
       <el-col :span="8">
 
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item v-for="item in breadcrumbs" :key="item.breadName">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb-item v-for="item in breadcrumbs" :key="item.breadName">
           <span v-if="item.indexNum === 0"
                 @click="reSetCurrentPid(item.currentPid,item.indexNum)">{{item.breadName}}</span>
-          <span v-else @click="goToPage(item.currentPid,item.indexNum)">{{item.breadName}}</span>
-        </el-breadcrumb-item>
-      </el-breadcrumb>
+            <span v-else @click="goToPage(item.currentPid,item.indexNum)">{{item.breadName}}</span>
+          </el-breadcrumb-item>
+        </el-breadcrumb>
       </el-col>
       <el-col :span="8" :offset="8">
         <span style=" font-size: 13px;font-weight: bold">人就是在不断的选择的矛盾中,戴上面具，焚烧过去,武装自己</span><br>
@@ -32,7 +32,7 @@
           :headers=importHeaders
           :data=uploadData
           style="float: left; padding-right: 1vh">
-          <el-button icon="el-icon-upload" >上传</el-button>
+          <el-button icon="el-icon-upload">上传</el-button>
         </el-upload>
         <el-button icon="el-icon-folder-add" @click="createDir">新建文件夹</el-button>
         <el-button icon="el-icon-download" @click="downloadFile">下载</el-button>
@@ -61,7 +61,7 @@
               <i class="el-icon-folder"></i>
               <span>{{ scope.row.fileName }}</span>
             </div>
-            <div v-else-if="scope.row.type === 'music'">
+            <div v-else-if="scope.row.type === 'mp3'">
               <i class="el-icon-headset"></i>
               <span>{{ scope.row.fileName }}</span>
             </div>
@@ -77,12 +77,13 @@
               <i class="el-icon-tickets"></i>
               <span>{{ scope.row.fileName }}</span>
             </div>
-            <div v-else-if="scope.row.type === 'doc'">
-              <i class="el-icon-document-copy"></i>
-              <span>{{ scope.row.fileName }}</span>
-            </div>
+
             <div v-else-if="scope.row.type === 'png' || scope.row.type === 'jpg'">
               <i class="el-icon-picture"></i>
+              <span>{{ scope.row.fileName }}</span>
+            </div>
+            <div v-else>
+              <i class="el-icon-document-copy"></i>
               <span>{{ scope.row.fileName }}</span>
             </div>
           </template>
@@ -152,7 +153,7 @@
         this.ideSelection = [];
         this.multipleSelection = val;
         this.multipleSelection.forEach(value => {
-          this.ideSelection.push({'id': value.id, 'type': value.type});
+          this.ideSelection.push({'id': value.id, 'type': value.type,'downloadPath':value.nginxViewPath});
 
         });
       },
@@ -265,11 +266,15 @@
       downloadFile() {
         let goOnflag = false;
         let idStr = '';
+        let type = '';
+        let downloadPath='';
         if (this.ideSelection.length > 1) {
           this.$message({
             message: '最多支持下载一个文件',
             type: 'error'
           });
+          goOnflag = true;
+
         }
         this.ideSelection.forEach(value => {
           if (value.type === 'dir') {
@@ -281,6 +286,8 @@
             return;
           } else {
             idStr = idStr + value.id;
+            type = type + value.type;
+            downloadPath=downloadPath+value.downloadPath;
           }
 
         });
@@ -288,27 +295,32 @@
         if (goOnflag) {
           return;
         }
-        this.$http({
-          method: "get",
-          url: "file/downloadFile?id=" + idStr,
-          responseType: 'blob'
+        if (type === 'jpg' || type === 'png') {
+          this.$http({
+            method: "get",
+            url: "file/downloadFile?id=" + idStr,
+            responseType: 'blob'
 
-        }).then(res => {
-          let subBeginIndex = res.headers['content-disposition'].indexOf('=');
-          let fileNameStr = res.headers['content-disposition'].substring(subBeginIndex + 1, res.headers['content-disposition'].length);
-          console.log(fileNameStr);
-          const blob = res.data;
-          const reader = new FileReader();
-          reader.readAsDataURL(blob);
-          reader.onload = (e) => {
-            const a = document.createElement('a');
-            a.download = fileNameStr;
-            a.href = e.target.result;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-          }
-        })
+          }).then(res => {
+            let subBeginIndex = res.headers['content-disposition'].indexOf('=');
+            let fileNameStr = res.headers['content-disposition'].substring(subBeginIndex + 1, res.headers['content-disposition'].length);
+            console.log(fileNameStr);
+            const blob = res.data;
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onload = (e) => {
+              const a = document.createElement('a');
+              a.download = fileNameStr;
+              a.href = e.target.result;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            }
+          })
+        }else{
+          window.location.href=downloadPath;
+        }
+
       },
       getPageInfo(pid) {
         this.$http.get('file/indexFilePage/?pid=' + pid + '&username=' + localStorage.getItem("username"))
@@ -338,18 +350,20 @@
 <style scoped>
 
 
-  .el-table-div /deep/  .el-table, .el-table__expanded-cell {
+  .el-table-div /deep/ .el-table, .el-table__expanded-cell {
     background-color: transparent;
   }
 
   .el-table-div /deep/ .el-table tr {
-    background-color: transparent!important;
+    background-color: transparent !important;
   }
-  .el-table-div /deep/  .el-table--enable-row-transition .el-table__body td, .el-table .cell{
+
+  .el-table-div /deep/ .el-table--enable-row-transition .el-table__body td, .el-table .cell {
     background-color: transparent;
   }
-  .el-table::before {//去除底部白线
-  left: 0;
+
+  .el-table::before {
+  / / 去除底部白线 left: 0;
     bottom: 0;
     width: 100%;
     height: 0px;

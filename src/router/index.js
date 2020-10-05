@@ -8,6 +8,7 @@ import ImageFile from '@/components/file/imageFile'
 import ImageTimeLine from '@/components/file/image/imageTimeLine'
 import ImageRecent from '@/components/file/image/imageRecent'
 import ImageSearch from '@/components/file/image/imageSearch'
+import MusicFile from '@/components/file/musicFile'
 
 Vue.use(Router)
 
@@ -56,6 +57,10 @@ export default new Router({
             }
           ]
 
+        },
+        {
+          path: "/musicFile",
+          component: MusicFile
         }
       ]
     },
