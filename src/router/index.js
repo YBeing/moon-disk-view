@@ -4,11 +4,11 @@ import Login from '@/components/login/login'
 import Register from '@/components/login/register'
 import DiskMain from '@/components/file/diskMain'
 import AllFile from '@/components/file/allFile'
-import ImageFile from '@/components/file/imageFile'
+import ImageFile from '@/components/file/image/imageFile'
 import ImageTimeLine from '@/components/file/image/imageTimeLine'
 import ImageRecent from '@/components/file/image/imageRecent'
 import ImageSearch from '@/components/file/image/imageSearch'
-import MusicFile from '@/components/file/musicFile'
+import MusicFile from '@/components/file/music/musicFile'
 
 Vue.use(Router)
 

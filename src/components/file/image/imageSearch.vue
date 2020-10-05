@@ -35,7 +35,7 @@
     },
     mounted: function () {
       let keywordTmp=localStorage.getItem('keywordTmp');
-      this.$http.get('file/searchImage?keyWord='+keywordTmp +'&&username='+localStorage.getItem('username'))
+      this.$http.get('image/searchImage?keyWord='+keywordTmp +'&&username='+localStorage.getItem('username'))
         .then( resp => {
           this.allImageInfoSearch = resp.data.data.nginxViewList;
 
