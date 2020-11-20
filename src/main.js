@@ -16,9 +16,9 @@ Vue.use(less);
 Vue.config.productionTip = false;
 // axios.defaults.withCredentials=true;
 //开发环境路径
-axios.defaults.baseURL = 'http://localhost:8088/';
+// axios.defaults.baseURL = 'http://localhost:8088/';
 //生产环境路径
-// axios.defaults.baseURL = 'http://121.196.29.156:8088/';
+axios.defaults.baseURL = 'http://121.196.29.156:8088/';
 
 Vue.prototype.$http=axios;
 

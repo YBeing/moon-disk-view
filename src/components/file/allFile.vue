@@ -23,7 +23,7 @@
         <el-upload
           class="upload-demo"
           ref="upload"
-          action="http://localhost:8088/file/upload"
+          action="http://121.196.29.156:8088/file/upload"
           :limit="1"
           :show-file-list="true"
           :before-upload="beforeUpload"
