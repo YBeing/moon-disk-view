@@ -1,5 +1,11 @@
 <template>
   <div id="backgru">
+    <audio autoplay="autoplay">
+      <source
+        src="../../assets/mp3/许嵩-天龙八部之宿敌.flac"
+        type="audio/mpeg"
+      />
+    </audio>
     <el-row>
       <el-col>
 
@@ -166,9 +172,6 @@
     background-color: transparent;
   }
 
-  .el-button {
-    background-color: transparent;
-  }
   .el-menu-item.is-active{
     color: black;
   }

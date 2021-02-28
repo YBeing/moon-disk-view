@@ -46,32 +46,23 @@
         this.$router.push("/login");
       },
       register(){
-        this.$http({
-          method:"post",
-          url: "user/register",
-          data: {
-            username: this.username,
-            password: this.password
-          }
-
-        }).then(resp => {  //响应结果
-          if(resp.data.status === '0'){
+        this.$fetch('user/register',{"username":this.username,"password":this.password})
+        .then((resp) => {
+          
+          if (resp.result) {
             this.$message({
-              message: resp.data.msg,
-              type: 'error'
-            });
-          }else{
-            this.$message({
-              message: resp.data.msg,
+              message: resp.message,
               type: 'success'
             });
-            this.$router.push("/login");
+            this.$router.push('/login');
+          } else {
+            this.$message({
+              message: resp.message,
+              type: 'error'
+            });
           }
+        })
 
-
-        }).catch(err => {
-          this.$Message.error('请求失败：'+err.status+','+err.statusText);
-        });
       }
     }
   }

@@ -11,7 +11,7 @@
     <el-row>
 
       <div style="text-align: left; ">
-        <div style="display: inline;width: 520px; height: 130px; margin-right: 1vh" v-for="urlStr in allImageInfoSearch">
+        <div style="display: inline;width: 520px; height: 130px; margin-right: 1vh" v-for="urlStr in allImageInfoSearch" :key="urlStr">
           <el-image
             style="width: 130px; height: 130px;  "
             :src="urlStr"

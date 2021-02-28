@@ -43,7 +43,7 @@
       }
     },
     mounted: function () {
-      this.$router.push('/imageTimeLine');
+      this.$router.push('/imageRecent');
     },
     methods: {
       searchImage(){
