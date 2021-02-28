@@ -50,7 +50,7 @@
         let keywordTmp =this.formInline.keyWord;
         localStorage.setItem('keywordTmp',keywordTmp);
         //这里的跳转只是为了让再次查询的时候先跳转到其他的页面再通过routeLink跳转到查询页面
-        //因为如果不这样的话，那么当我们第一次查询过后，后面再次查询的时候就无法触发页面加载的mount方法了
+        //因为如果不这样的话，那么当我们第一次查询过后，后面再次查询的时候就无法触发页面加载的mount方法了,所以才这样
         this.$router.push('/imageRecent');
         },
       viewBind0(){
