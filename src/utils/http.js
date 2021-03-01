@@ -3,6 +3,7 @@ import { Message } from 'element-ui';
 
 axios.defaults.timeout = 5000;
 axios.defaults.baseURL ='http://localhost:8088/moondisk/';
+// axios.defaults.baseURL ='http://121.196.29.156:8088/moondisk/';
 
 /**
  * 封装get方法

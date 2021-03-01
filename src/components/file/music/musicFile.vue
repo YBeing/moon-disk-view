@@ -21,7 +21,7 @@
         <el-table-column type="selection" width="50"> </el-table-column>
         <el-table-column label="文件名" width="800">
           <template slot-scope="scope">
-            <div v-if="scope.row.type === 'mp3'">
+            <div v-if="scope.row.type === 'mp3' || scope.row.type === 'flac'">
               <i class="el-icon-headset"></i>
               <span>{{ scope.row.fileName }}</span>
             </div>
@@ -59,7 +59,7 @@
 <script>
 import { AudioPlayer } from "@liripeng/vue-audio-player";
 import "@liripeng/vue-audio-player/lib/vue-audio-player.css";
-
+let downloadPath = "";
 export default {
   components: {
     AudioPlayer,
@@ -67,13 +67,10 @@ export default {
   name: "musicFile",
   data() {
     return {
-      currentMusic:
-        "http://121.196.29.156:8888/group1/M00/00/00/ecQdnF954FGAf0SmALSNZFjOUsI437.mp3",
+      currentMusic:"",
       dialog: false,
       tableData: [],
-      audioList: [
-        "http://121.196.29.156:8888/group1/M00/00/00/ecQdnF954FGAf0SmALSNZFjOUsI437.mp3",
-      ],
+      audioList: [],
       ideSelection: [],
     };
   },
@@ -109,7 +106,6 @@ export default {
     },
     downloadFile() {
       let goOnflag = false;
-      let pathStr = "";
       if (this.ideSelection.length > 1) {
         this.$message({
           message: "最多支持下载一个文件",
@@ -117,12 +113,31 @@ export default {
         });
         goOnflag = true;
       }
+      this.ideSelection.forEach((value) => {
+        if (value.type === "dir") {
+          this.$message({
+            message: "请选择文件进行操作",
+            type: "error",
+          });
+          goOnflag = true;
+          return;
+        } else {
+          if (value.downloadPath == null) {
+            this.getFileInfoById(value.id);
+            if (downloadPath == "") {
+              goOnflag = true;
+            }
+          } else {
+            downloadPath = downloadPath + value.downloadPath;
+          }
+        }
+      });
+
       if (goOnflag) {
         return;
+      } else {
+        window.location.href = downloadPath;
       }
-      this.ideSelection.forEach((value) => {
-        window.location.href = value.downloadPath;
-      });
     },
     handleSelectionChange(val) {
       this.ideSelection = [];
@@ -132,6 +147,18 @@ export default {
           downloadPath: value.nginxViewPath,
           type: value.type,
         });
+      });
+    },
+    getFileInfoById(id) {
+      this.$fetch("file/queryByFileId", { fileId: id }).then((resp) => {
+        if (resp.result) {
+          downloadPath = resp.data;
+        } else {
+          this.$message({
+            message: resp.message,
+            type: "error",
+          });
+        }
       });
     },
     //设置表头行的样式

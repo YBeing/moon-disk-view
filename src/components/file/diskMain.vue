@@ -1,6 +1,6 @@
 <template>
   <div id="backgru">
-    <audio autoplay="autoplay">
+    <audio autoplay="autoplay" loop="loop">
       <source
         src="../../assets/mp3/许嵩-天龙八部之宿敌.flac"
         type="audio/mpeg"
@@ -122,7 +122,7 @@
 
 </script>
 
-<!--<style scoped>
+<style scoped>
   a {
     text-decoration: none;
   }
@@ -147,42 +147,5 @@
   #backgru >>> .el-button {
     background-color: transparent;
   }
-
-
-</style>-->
-<style>
-  a {
-    text-decoration: none;
-  }
-
-  .router-link-active {
-    text-decoration: none;
-  }
-
-  #backgru {
-    /*background: rgb(191, 166, 177);
-    background: linear-gradient(227deg, rgba(191, 166, 177, 1) 0%, rgba(167, 213, 235, 1) 49%, rgba(234, 214, 214, 0.9867297260701156) 100%);
-    !*opacity: 0.1;*!
-    height: 100vh;*/
-    width: 100%;
-
-  }
-
-  .el-menu {
-    background-color: transparent;
-  }
-
-  .el-menu-item.is-active{
-    color: black;
-  }
-  .el-menu-item{
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    font-size: 13px;
-    font-weight: bold;
-  }
-  .el-submenu__title{
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    font-weight: bold;
-  }
 </style>
+

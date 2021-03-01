@@ -1,6 +1,5 @@
 <template>
   <div id="backgrou2" style="padding-left: 4vh">
-    
     <el-row style="padding-top: 1vh; padding-left: 3vh">
       <el-col :span="8">
         <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -133,6 +132,7 @@ let Authorization = localStorage.getItem("Authorization");
 let username = localStorage.getItem("username");
 let dirPid = 0;
 let currentPidForCreate = { currPidForCreate: 0 };
+let downloadPath = "";
 
 export default {
   name: "allFile",
@@ -150,23 +150,23 @@ export default {
   },
   mounted: function () {
     //查询文件信息
-    this.$fetch("file/reloadFileInfo", { username: username, pid: 0 }).then(
-      (resp) => {
-        console.log(resp.data);
-        if (resp.result) {
-          this.tableData = resp.data;
-        } else {
-          this.$message({
-            message: resp.message,
-            type: "error",
-          });
-        }
+    this.$fetch("file/reloadFileInfo", {
+      username: localStorage.getItem("username"),
+      pid: 0,
+    }).then((resp) => {
+      console.log(resp.data);
+      if (resp.result) {
+        this.tableData = resp.data;
+      } else {
+        this.$message({
+          message: resp.message,
+          type: "error",
+        });
       }
-    );
+    });
   },
   methods: {
     handleSelectionChange(val) {
-      console.log(val);
       this.ideSelection = [];
       this.multipleSelection = val;
       this.multipleSelection.forEach((value) => {
@@ -250,11 +250,11 @@ export default {
       this.$post("file/deleteFile", { data: this.ideSelection }).then(
         (resp) => {
           if (resp.result) {
+            this.getPageInfo(currentPidForCreate.currPidForCreate);
             this.$message({
               message: resp.message,
               type: "success",
             });
-            this.getPageInfo(currentPidForCreate.currPidForCreate);
           } else {
             this.$message({
               message: resp.message,
@@ -266,9 +266,6 @@ export default {
     },
     downloadFile() {
       let goOnflag = false;
-      let idStr = "";
-      let type = "";
-      let downloadPath = "";
       if (this.ideSelection.length > 1) {
         this.$message({
           message: "最多支持下载一个文件",
@@ -285,14 +282,21 @@ export default {
           goOnflag = true;
           return;
         } else {
-          idStr = idStr + value.id;
-          type = type + value.type;
-          downloadPath = downloadPath + value.downloadPath;
+          if (value.downloadPath == null) {
+            this.getFileInfoById(value.id);
+            if (downloadPath == "") {
+              goOnflag = true;
+            }
+          } else {
+            downloadPath = downloadPath + value.downloadPath;
+          }
         }
       });
 
       if (goOnflag) {
         return;
+      } else {
+        window.location.href = downloadPath;
       }
       // if (type === 'jpg' || type === 'png') {
       //   this.$http({
@@ -319,7 +323,6 @@ export default {
       // }else{
       //   window.location.href=downloadPath;
       // }
-      window.location.href = downloadPath;
     },
     getPageInfo(pid) {
       this.$fetch("file/reloadFileInfo", { pid: pid, username: username }).then(
@@ -334,6 +337,18 @@ export default {
           }
         }
       );
+    },
+    getFileInfoById(id) {
+      this.$fetch("file/queryByFileId", { fileId: id }).then((resp) => {
+        if (resp.result) {
+          downloadPath = resp.data;
+        } else {
+          this.$message({
+            message: resp.message,
+            type: "error",
+          });
+        }
+      });
     },
     //设置表头行的样式
     tableHeaderColor({ row, column, rowIndex, columnIndex }) {

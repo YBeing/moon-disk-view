@@ -45,6 +45,16 @@ export default {
       },
     };
   },
+  mounted: function () {
+    var _this = this;
+    document.onkeydown = function (e) {
+      let key = window.event.keyCode;
+      if (key == 13) {
+        window.event.preventDefault(); //关闭浏览器快捷键
+        _this.login();
+      }
+    };
+  },
   methods: {
     register() {
       this.$router.push("/register");
