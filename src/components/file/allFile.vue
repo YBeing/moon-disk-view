@@ -265,64 +265,67 @@ export default {
       );
     },
     downloadFile() {
-      let goOnflag = false;
       if (this.ideSelection.length > 1) {
         this.$message({
-          message: "最多支持下载一个文件",
+          message: "暂时只支持同时下载一个文件",
           type: "error",
         });
-        goOnflag = true;
+        return;
       }
-      this.ideSelection.forEach((value) => {
-        if (value.type === "dir") {
-          this.$message({
-            message: "请选择文件进行操作",
-            type: "error",
-          });
-          goOnflag = true;
-          return;
-        } else {
-          if (value.downloadPath == null) {
-            this.getFileInfoById(value.id);
-            if (downloadPath == "") {
-              goOnflag = true;
-            }
+      this.$fetch("file/queryByFileId", {
+        fileId: this.ideSelection[0].id,
+      }).then((resp) => {
+        if (resp.result) {
+          if (resp.data.indexOf("jpg") != -1 || resp.data.indexOf("png") != -1) {
+            window.location.href = resp.data;
+
+            // this.$http({
+            //   method: "get",
+            //   url: "file/downloadFile?id=" + this.ideSelection[0].id,
+            //   responseType: "blob",
+            // }).then((res) => {
+            //   //获取文件名
+            //   // let subBeginIndex = res.headers["content-disposition"].indexOf(
+            //   //   "="
+            //   // );
+            //   // let fileNameStr = res.headers["content-disposition"].substring(
+            //   //   subBeginIndex + 1,
+            //   //   res.headers["content-disposition"].length
+            //   // );
+            //   // // console.log(res);
+            //   // let link = document.createElement("a");
+            //   // link.href = window.URL.createObjectURL(new Blob([res.data]));
+            //   // link.target = "_blank";
+            //   // //文件名和格式
+            //   // link.download = fileNameStr;
+            //   // document.body.appendChild(link);
+            //   // link.click();
+            //   // document.body.removeChild(link);
+
+
+
+            //   // let subBeginIndex = res.headers['content-disposition'].indexOf('=');
+            //   // let fileNameStr = res.headers['content-disposition'].substring(subBeginIndex + 1, res.headers['content-disposition'].length);
+            //   // console.log(fileNameStr);
+            //   // const blob = res.data;
+            //   // const reader = new FileReader();
+            //   // reader.readAsDataURL(blob);
+            //   // reader.onload = (e) => {
+            //   //   const a = document.createElement('a');
+            //   //   a.download = fileNameStr;
+            //   //   a.href = e.target.result;
+            //   //   document.body.appendChild(a);
+            //   //   a.click();
+            //   //   document.body.removeChild(a);
+            //   // }
+            // window.location.href = resp.data;
+
+            // });
           } else {
-            downloadPath = downloadPath + value.downloadPath;
+            window.location.href = resp.data;
           }
         }
       });
-
-      if (goOnflag) {
-        return;
-      } else {
-        window.location.href = downloadPath;
-      }
-      // if (type === 'jpg' || type === 'png') {
-      //   this.$http({
-      //     method: "get",
-      //     url: "file/downloadFile?id=" + idStr,
-      //     responseType: 'blob'
-
-      //   }).then(res => {
-      //     let subBeginIndex = res.headers['content-disposition'].indexOf('=');
-      //     let fileNameStr = res.headers['content-disposition'].substring(subBeginIndex + 1, res.headers['content-disposition'].length);
-      //     console.log(fileNameStr);
-      //     const blob = res.data;
-      //     const reader = new FileReader();
-      //     reader.readAsDataURL(blob);
-      //     reader.onload = (e) => {
-      //       const a = document.createElement('a');
-      //       a.download = fileNameStr;
-      //       a.href = e.target.result;
-      //       document.body.appendChild(a);
-      //       a.click();
-      //       document.body.removeChild(a);
-      //     }
-      //   })
-      // }else{
-      //   window.location.href=downloadPath;
-      // }
     },
     getPageInfo(pid) {
       this.$fetch("file/reloadFileInfo", { pid: pid, username: username }).then(
@@ -350,6 +353,7 @@ export default {
         }
       });
     },
+
     //设置表头行的样式
     tableHeaderColor({ row, column, rowIndex, columnIndex }) {
       return "background-color:transparent;font-size:15px;";
